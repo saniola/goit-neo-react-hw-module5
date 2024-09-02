@@ -1,0 +1,33 @@
+.component {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10rem 0;
+}
+.form {
+  width: 450px;
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid #ccc;
+}
+
+.input {
+  width: 100%;
+  border: none;
+  outline: none;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+}
+
+.button {
+  padding: 0.6em 1.2em;
+  border: none;
+  background-color: #ccc;
+  color: white;
+  font-size: 1.2em;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: #333;
+}

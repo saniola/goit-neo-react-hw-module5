@@ -1,0 +1,18 @@
+.component {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+}
+
+.link {
+  color: rgb(72, 72, 207);
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: 600;
+  margin: 1rem 0;
+}
+
+link:hover {
+  text-decoration: underline;
+  color: rgb(34, 34, 100);
+}

@@ -1,0 +1,22 @@
+.link {
+  color: black;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: 600;
+  padding: 1rem;
+}
+
+.link:hover {
+  text-decoration: underline;
+  color: blue;
+}
+
+.active {
+  color: blue;
+}
+
+.nav {
+  display: flex;
+  justify-content: center;
+  border-bottom: 1px solid #ccc;
+}
