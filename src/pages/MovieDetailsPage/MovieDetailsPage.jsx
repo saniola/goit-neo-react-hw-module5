@@ -6,23 +6,22 @@ import {
   useParams,
   useLocation,
   useNavigate,
+  Outlet,
 } from "react-router-dom";
 import { getMovieDetailsById } from "../../api/getMovieDetailsById";
+import styles from "./MovieDetailsPage.module.css";
+
 const MovieCast = lazy(() => import("../../components/MovieCast/MovieCast"));
 const MovieReview = lazy(() =>
-  import("../../components/MovieReviews/MovieReviews")
+  import("../../components/MovieReview/MovieReview")
 );
-import styles from "./MovieDetailsPages.module.css";
 
 const MovieDetailsPage = () => {
   const { movieId } = useParams();
   const [movieDetails, setMovieDetails] = useState(null);
   const location = useLocation();
   const navigate = useNavigate();
-  const btnRef = useRef();
-
-  const previousLocation = location.state || "/movies";
-  let vote, imgPath;
+  const previousLocation = useRef(location.state || "/movies");
 
   useEffect(() => {
     const fetchMovieDetails = async () => {
@@ -37,32 +36,36 @@ const MovieDetailsPage = () => {
     fetchMovieDetails();
   }, [movieId]);
 
-  if (movieDetails) {
-    imgPath = `https://image.tmdb.org/t/p/w500/${movieDetails.poster_path}`;
-
-    vote = Math.round(movieDetails.vote_average * 10);
-  } else {
+  if (!movieDetails) {
     return <p>Loading movie details...</p>;
   }
 
+  const imgPath = `https://image.tmdb.org/t/p/w500/${movieDetails.poster_path}`;
+  const vote = Math.round(movieDetails.vote_average * 10);
+
   return (
-    <Suspense>
+    <Suspense fallback={<div>Loading...</div>}>
       <button
-        ref={btnRef}
-        onClick={() => navigate(previousLocation)}
+        onClick={() => navigate(previousLocation.current)}
         className={styles.back}
       >
         Return back
       </button>
 
       <div className={styles.info}>
-        <img src={imgPath} className={styles.image}></img>
+        <img src={imgPath} className={styles.image} alt={movieDetails.title} />
+
         <div className={styles.desc}>
           <h1 className={styles.title}>{movieDetails.title}</h1>
+
           <p>User rate: {vote}%</p>
+
           <h2>Overview</h2>
+
           <p>{movieDetails.overview}</p>
+
           <h2>Genres</h2>
+
           {movieDetails.genres.map((genre) => (
             <span key={genre.id}>{genre.name}</span>
           ))}
@@ -70,6 +73,7 @@ const MovieDetailsPage = () => {
           <div className={styles.extra}>
             <nav className={styles.subNav}>
               <h3>Additional information:</h3>
+
               <NavLink
                 to={`/movies/${movieId}/cast`}
                 className={styles.subLink}
@@ -77,6 +81,7 @@ const MovieDetailsPage = () => {
               >
                 Cast
               </NavLink>
+
               <NavLink
                 to={`/movies/${movieId}/review`}
                 className={styles.subLink}
@@ -89,8 +94,11 @@ const MovieDetailsPage = () => {
 
           <Routes>
             <Route path="cast" element={<MovieCast />} />
+
             <Route path="review" element={<MovieReview />} />
           </Routes>
+
+          <Outlet />
         </div>
       </div>
     </Suspense>
